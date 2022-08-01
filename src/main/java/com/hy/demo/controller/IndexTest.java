@@ -1,0 +1,14 @@
+package com.hy.demo.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class IndexTest {
+
+
+    @RequestMapping("/hello")
+    public String hello(){
+        return "Hello HY";
+    }
+}

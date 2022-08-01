@@ -1,0 +1,167 @@
+# 开发环境配置
+server:
+    # 服务器的HTTP端口，默认为80
+    port: 80
+    servlet:
+        # 应用的访问路径
+        context-path: /
+    tomcat:
+        # tomcat的URI编码
+        uri-encoding: UTF-8
+spring:
+    # 资源信息
+#    messages:
+#        # 国际化资源文件路径
+#        basename: i18n/messages
+#    profiles:
+#        active: druid
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        url: jdbc:mysql://localhost:3306/ry?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: root
+        password: 123456
+        druid:
+            initial-size: 2
+            min-idle: 2
+            max-active: 20
+            max-wait: 60000
+            remove-abandoned: true
+            remove-abandoned-timeout: 60
+            # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+            time-between-eviction-runs-millis: 60000
+            # 配置一个连接在池中最小生存的时间，单位是毫秒
+            min-evictable-idle-time-millis: 30000
+            validation-query: select 1
+            test-on-return: true
+            test-while-idle: true
+            test-on-borrow: true
+            # 打开PSCache，并且指定每个连接上PSCache的大小
+            pool-prepared-statements: true
+            max-pool-prepared-statement-per-connection-size: 20
+            # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+            filters: stat,wall,slf4j
+            # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+            connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+            # 合并多个DruidDataSource的监控数据 http://localhost:8100/demo/druid/index.html
+            # admin/admin
+            useGlobalDataSourceStat: true
+    #mybatis
+    mybatis:
+        mapper-locations: classpath:mapping/*.xml
+        type-aliases-package: com.hy.demo.entity
+    # 文件上传
+    servlet:
+        multipart:
+            # 单个文件大小
+            max-file-size:  10MB
+            # 设置总上传的文件大小
+            max-request-size:  20MB
+    # 服务模块
+    devtools:
+        restart:
+            # 热部署开关
+            enabled: true
+    mvc:
+        view:
+            prefix: /
+            suffix: .html
+        #static-path-pattern: /**
+    #resources:
+        #static-locations: classpath:/resources/,classpath:/static/,classpath:/public/
+    # redis 配置
+    redis:
+        # 地址
+        host: localhost
+        # 端口，默认为6379
+        port: 6379
+        # 密码
+        password:
+        # 连接超时时间
+        timeout: 10s
+        lettuce:
+            pool:
+                # 连接池中的最小空闲连接
+                min-idle: 0
+                # 连接池中的最大空闲连接
+                max-idle: 8
+                # 连接池的最大数据库连接数
+                max-active: 8
+                # #连接池最大阻塞等待时间（使用负值表示没有限制）
+                max-wait: -1ms
+
+# token配置
+#token:
+#    # 令牌自定义标识
+#    header: Authorization
+#    # 令牌密钥
+#    secret: abcdefghijklmnopqrstuvwxyz
+#    # 令牌有效期（默认30分钟）
+#    expireTime: 30
+
+# MyBatis配置
+#mybatis:
+#    # 搜索指定包别名
+#    typeAliasesPackage: com.ruoyi.**.domain
+#    # 配置mapper的扫描，找到所有的mapper.xml映射文件
+#    mapperLocations: classpath*:mapper/**/*Mapper.xml
+#    # 加载全局的配置文件
+#    configLocation: classpath:mybatis/mybatis-config.xml
+
+# PageHelper分页插件
+#pagehelper:
+#    helperDialect: mysql
+#    reasonable: true
+#    supportMethodsArguments: true
+#    params: count=countSql
+
+# Swagger配置
+#swagger:
+#    # 是否开启swagger
+#    enabled: true
+#    # 请求前缀
+#    pathMapping: /dev-api
+
+# 防止XSS攻击
+#xss:
+#    # 过滤开关
+#    enabled: true
+#    # 排除链接（多个用逗号分隔）
+#    excludes: /system/notice/*
+#    # 匹配链接
+#    urlPatterns: /system/*,/monitor/*,/tool/*
+# Shiro
+shiro:
+    user:
+        # 登录地址
+        loginUrl: /login
+        # 权限认证失败地址
+        unauthorizedUrl: /unauth
+        # 首页地址
+        indexUrl: /index
+        # 验证码开关
+        captchaEnabled: true
+        # 验证码类型 math 数组计算 char 字符
+        captchaType: math
+    cookie:
+        # 设置Cookie的域名 默认空，即当前访问的域名
+        domain:
+        # 设置cookie的有效访问路径
+        path: /
+        # 设置HttpOnly属性
+        httpOnly: true
+        # 设置Cookie的过期时间，天为单位
+        maxAge: 30
+        # 设置密钥，务必保持唯一性（生成方式，直接拷贝到main运行即可）KeyGenerator keygen = KeyGenerator.getInstance("AES"); SecretKey deskey = keygen.generateKey(); System.out.println(Base64.encodeToString(deskey.getEncoded()));
+        cipherKey: zSyK5Kp6PZAAjlT+eeNMlg==
+    session:
+        # Session超时时间，-1代表永不过期（默认30分钟）
+        expireTime: 30
+        # 同步session到数据库的周期（默认1分钟）
+        dbSyncPeriod: 1
+        # 相隔多久检查一次session的有效性，默认就是10分钟
+        validationInterval: 10
+        # 同一个用户最大会话数，比如2的意思是同一个账号允许最多同时两个人登录（默认-1不限制）
+        maxSession: -1
+        # 踢出之前登录的/之后登录的用户，默认踢出之前登录的用户
+        kickoutAfter: false
